@@ -1,0 +1,20 @@
+{
+    "name": "wini/token-bundle",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Nicolas",
+            "email": "nicolas.gasp@free.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Wini\\TokenBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "wini/manager": "0.0.1"
+    }
+}

@@ -8,7 +8,7 @@ use DateTime;
 /**
  * Token
  *
- * @ORM\Table(schema="app", name="Token", indexes={ @ORM\Index(name="type_idx", columns={"type"}) })
+ * @ORM\Table(name="Token", indexes={ @ORM\Index(name="type_idx", columns={"type"}) })
  * @ORM\Entity
  */
 class Token 

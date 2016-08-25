@@ -8,7 +8,7 @@ use DateTime;
 /**
  * Token
  *
- * @ORM\Table(schema="app", name="Token")
+ * @ORM\Table(schema="app", name="Token", indexes={ @ORM\Index(name="type_idx", columns={"type"}) })
  * @ORM\Entity
  */
 class Token 
@@ -50,18 +50,42 @@ class Token
     
     /**
      * @var string
-     * @ORM\Column(name="data", type="string", nullable = true, length=255)
+     * @ORM\Column(name="data", type="object", nullable=true)
      */
     private $data;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="type", type="integer", nullable = true)
+     */
+    private $type;
 
     public function __construct()
     {
         $this->start = new DateTime();
     }
+
+    /**
+     * @param integer $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
     
     /**
      * Data lié a la token
-     * @param string $data
+     * @param object $data
      * @return \Wini\TokenBundle\Entity\Token
      */
     public function setData($data = null) 
@@ -71,7 +95,7 @@ class Token
     }
     
     /**
-     * @return string
+     * @return object
      */
     public function getData()
     {

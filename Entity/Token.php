@@ -4,6 +4,7 @@ namespace Wini\TokenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Wini\TokenBundle\Exception\InvalidTokenException;
 
 /**
  * Token
@@ -221,5 +222,14 @@ class Token
                 $this->getStart() <= $now && $this->getExpireDate() >= $now)
             return false;
         return true;
+    }
+
+    /**
+     * @throws InvalidTokenException
+     */
+    public function assert() {
+        if ($this->isExpired()) {
+            throw new InvalidTokenException('Token expired');
+        }
     }
 }

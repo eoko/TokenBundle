@@ -61,7 +61,7 @@ class TokenManager extends AbstractFlushManager {
     /**
      * Récupère la token grace a la string de base
      * @param string $token
-     * @return null|object
+     * @return null|Token
      */
     public function getToken($token)
     {

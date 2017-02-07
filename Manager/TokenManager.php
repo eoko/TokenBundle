@@ -3,6 +3,7 @@
 namespace Wini\TokenBundle\Manager;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Wini\TokenBundle\Entity\Token;
 use Wini\Manager\AbstractFlushManager;
 use Doctrine\ORM\EntityManager;
@@ -61,11 +62,41 @@ class TokenManager extends AbstractFlushManager {
     /**
      * Récupère la token grace a la string de base
      * @param string $token
-     * @return null|object
+     * @return null|Token
      */
     public function getToken($token)
     {
-        return $this->repo->findOneBy([ 'token' => $token ]);
+        $token = $this->repo->findOneBy([ 'token' => $token ]);
+
+        if ($token && ($data = $token->getData())) {
+            if (is_object($data)) {
+                $ref = new \ReflectionClass($data);
+                $className = (!empty($ref->getNamespaceName()) ? '\\' . $ref->getNamespaceName() . '\\' : '');
+                $className .= $ref->getShortName();
+                $metadataFactory = $this->em->getMetadataFactory();
+
+                if($metadataFactory->isTransient($className)) {
+                    $identifiers = $metadataFactory->getMetadataFor($className)->getIdentifierFieldNames();
+                    $findParameters = [];
+
+                    foreach($identifiers as $identifier) {
+                        $fn = 'get' . $identifier;
+                        if ($ref->hasMethod($fn)) {
+                            $findParameters[$identifier] = $data->$fn();
+                        }
+                    }
+
+                    if (empty($findParameters)) {
+                        throw new \Exception('Cannot find identifier for entity ' . $className);
+                    }
+
+                    $repo = $this->em->getRepository($className);
+                    $data = $repo->findOneBy($findParameters);
+                    $token->setData($data);
+                }
+            }
+        }
+        return $token;
     }
     
     /**

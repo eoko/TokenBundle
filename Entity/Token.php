@@ -228,10 +228,14 @@ class Token implements Serializable
     /**
      * @throws InvalidTokenException
      */
-    public function assert() {
+    public function assert($throw = true) {
         if ($this->isExpired()) {
-            throw new InvalidTokenException('Token expired');
+            if ($throw) {
+                throw new InvalidTokenException('Token expired');
+            }
+            return false;
         }
+        return true;
     }
 
     /**

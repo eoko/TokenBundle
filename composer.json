@@ -1,6 +1,7 @@
 {
     "name": "wini/token-bundle",
     "type": "symfony-bundle",
+    "description": "token bundle",
     "authors": [
         {
             "name": "Nicolas",

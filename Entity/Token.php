@@ -242,7 +242,7 @@ class Token implements Serializable
      */
     public function serialize()
     {
-        return $this->serialize([
+        return serialize([
             $this->id
         ]);
     }

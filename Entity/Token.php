@@ -4,6 +4,7 @@ namespace Wini\TokenBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Serializable;
 use Wini\TokenBundle\Exception\InvalidTokenException;
 
 /**
@@ -12,7 +13,7 @@ use Wini\TokenBundle\Exception\InvalidTokenException;
  * @ORM\Table(name="Token", indexes={ @ORM\Index(name="type_idx", columns={"type"}) })
  * @ORM\Entity
  */
-class Token 
+class Token implements Serializable
 {
     const ONE_MINUTE = 60;
     const ONE_HOUR   = self::ONE_MINUTE * 60;
@@ -231,5 +232,34 @@ class Token
         if ($this->isExpired()) {
             throw new InvalidTokenException('Token expired');
         }
+    }
+
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return $this->serialize([
+            $this->id
+        ]);
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+        ) = unserialize($serialized);
     }
 }

@@ -16,6 +16,6 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "wini/manager": "dev-master"
+        "wini/manager": "1.0.0"
     }
 }

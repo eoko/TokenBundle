@@ -112,7 +112,7 @@ class Token implements Serializable
      */
     private function hashToken($seed = null, $raw = false) 
     {
-        return hash('sha512', uniqid(null, true) . mt_rand(0, time(NULL)) . ($seed ? $seed : ''), $raw);
+        return hash('sha512', uniqid(null, true) . mt_rand(0, time()) . ($seed ? $seed : ''), $raw);
     }
     
     /**
